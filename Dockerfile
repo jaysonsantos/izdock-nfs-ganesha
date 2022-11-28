@@ -134,7 +134,7 @@ RUN set -eux && \
   -DENABLE_VFS_POSIX_ACL=ON \
   -DENABLE_RFC_ACL=ON \
   ../src/ && \
-  make && \
+  make -j 16 && \
   make install && \
   \
   cp /usr/src/nfs-ganesha-${NFS_GANESHA_VERSION}/src/scripts/ganeshactl/org.ganesha.nfsd.conf /etc/dbus-1/system.d/ && \
