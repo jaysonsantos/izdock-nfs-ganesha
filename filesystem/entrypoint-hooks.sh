@@ -30,7 +30,7 @@ echo "=> Configuring NFS Ganesha Server..."
 
 bootstrap_idmap() {
     echo "--> Bootstrapping idmap config"
-    cat<<END > /etc/idmapd.conf
+    cat <<END >/etc/idmapd.conf
 [General]
 Domain = ${IDMAP_DOMAIN}
 
@@ -46,7 +46,7 @@ END
 
 init_rpc() {
     echo "--> Starting rpc services"
-    if [ ! -x /run/rpcbind ] ; then
+    if [ ! -x /run/rpcbind ]; then
         # debian
         install -m755 -g root -o root -d /run/rpcbind
         touch /run/rpcbind/rpcbind.xdr /run/rpcbind/portmap.xdr
@@ -62,7 +62,7 @@ init_rpc() {
 
 init_dbus() {
     echo "--> Starting dbus"
-    if [ ! -x /var/run/dbus ] ; then
+    if [ ! -x /var/run/dbus ]; then
         # debian
         install -m755 -g messagebus -o messagebus -d /var/run/dbus
         # redhat
@@ -178,8 +178,7 @@ EXPORT {
     Pseudo = "${PSEUDO_PATH}";
 
     # Access control options
-    Access_Type = NONE;
-    #Access_Type = ${ACCESS_TYPE};
+    Access_Type = ${ACCESS_TYPE};
     Squash = ${SQUASH_MODE};
 
     # NFS protocol options
@@ -206,8 +205,10 @@ EXPORT {
     
     # Exporting FSAL
     FSAL {
-      name = VFS;
-    }
+		Name = PROXY_V4;
+		Srv_Addr = ${EXPORT_PROXY_ADDRESS};
+		Use_Privileged_Client_Port = true;
+	}
 }
 END
 }
